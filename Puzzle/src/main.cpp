@@ -2,6 +2,7 @@
 #include <iostream>
 #include "CImg.h"
 #include "matrix.h"
+#include <list>
 using namespace std;
 using namespace cimg_library;
 
@@ -18,9 +19,11 @@ int main(int argc,char **argv) {
 	const int cols = 3;
 	const int rows = 3;
 	int id = 1; //Identifier for the different images
+	std::list<Tile>* ady = new list<Tile>(4); //To store the adyacents
 
 	CImg<unsigned char> array[rows][cols];
 	Matrix<Tile, cols, rows> tileArray; // size_x, size_y
+
 	//Tile* tileArray[rows][cols];
 
 	int x = cimg_option("-x",ogImage.width()/cols,"x crop"); //width
@@ -59,9 +62,14 @@ int main(int argc,char **argv) {
 					cout << "Identifier: " << tileArray(w,z).getIdentifier() << endl;
 					auxImage = tileArray(w,z).getImage();
 					draw_disp.display(auxImage);
+					ady = tileArray.getAdjacents(w,z);//test
+					for (std::list<Tile>::iterator it = ady->begin(), end = ady->end(); it != end; ++it) {
+					    cout << "Adyacent with: " <<(*it).getIdentifier() << endl;
+					}
 					sleep(1);
 				}
 			}
+
 
 		}
 	}

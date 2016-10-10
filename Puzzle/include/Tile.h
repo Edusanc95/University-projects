@@ -10,8 +10,8 @@ public:
 	Tile(int identifier, CImg<unsigned char> _image);
 	~Tile();
 
-	int getIdentifier();
-	CImg<unsigned char> getImage();
+	const int getIdentifier();
+	const CImg<unsigned char> getImage();
 
 private:
 	int _identifier;
