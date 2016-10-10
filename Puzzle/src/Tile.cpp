@@ -3,11 +3,31 @@
 #include "Tile.h"
 using namespace std;
 
-Tile::Tile(int identifier, CImg<unsigned char> _image) {
-  cout << "[!] Creating new tile [!]" << endl;
-}
-Tile::~Tile () {
-  cout << "[X] Destroying tile [X]" << endl;
+Tile::Tile() {
+  cout << "[!] New tile created [!]" << endl;
+
 }
 
+Tile::Tile(int identifier, CImg<unsigned char> image) {
+
+  _identifier = identifier;
+  _image = image;
+
+  cout << "[!] New tile created with identifier " << _identifier << " [!]" << endl;
+
+}
+
+Tile::~Tile () {
+
+  cout << "[X] Tile destroyed with identifier "<< _identifier << " [X]" << endl;
+
+}
+
+int Tile::getIdentifier(){
+	return _identifier;
+}
+
+CImg<unsigned char> Tile::getImage(){
+	return _image;
+}
 

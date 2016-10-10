@@ -6,8 +6,12 @@ using namespace cimg_library;
 
 class Tile {
 public:
+	Tile();
 	Tile(int identifier, CImg<unsigned char> _image);
 	~Tile();
+
+	int getIdentifier();
+	CImg<unsigned char> getImage();
 
 private:
 	int _identifier;
