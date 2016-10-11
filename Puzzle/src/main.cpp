@@ -16,8 +16,8 @@ int main(int argc,char **argv) {
 	CImg<unsigned char> ogImage("puzzle.png"), auxImage("puzzle.png");
 	CImgDisplay main_disp(ogImage, "OG Image"), draw_disp(auxImage, "Cropped Image");
 
-	const int cols = 3;
-	const int rows = 3;
+	const int cols = 5;
+	const int rows = 5;
 	int id = 1; //Identifier for the different images
 	std::list<Tile>* ady = new list<Tile>(4); //To store the adyacents
 
@@ -70,6 +70,17 @@ int main(int argc,char **argv) {
 				}
 			}
 
+			tileArray.shuffle();
+
+			//Reconstruction of the image.
+			for(int q = 0; q < cols; q++){
+				for(int s = 0; s < rows; s++){
+					ogImage.draw_image(s*x,q*y, tileArray(q,s).getImage());
+					main_disp.display(ogImage);
+				}
+			}
+
+			ogImage.save("messyPuzzle.png");
 
 		}
 	}
