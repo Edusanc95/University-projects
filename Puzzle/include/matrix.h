@@ -37,14 +37,6 @@ public:
 
 	std::list<T>* getAdjacents(int x, int y) {
 		std::list<T>* result = new list<T>;
-		/*
-		 for (int dx = -1; dx <= 1; ++dx) {
-		 for (int dy = -1; dy <= 1; ++dy) {
-		 if (dx != 0 || dy != 0) {
-		 result->push_back(m_Data[(x + dx) + (y + dy)]);
-		 }
-		 }
-		 }*/
 
 		T top, midLeft, midRight, bot;
 		if(y-1>=0) {
