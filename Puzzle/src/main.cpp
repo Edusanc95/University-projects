@@ -14,9 +14,9 @@ void cropImage(int cols, int rows, int x, int y, CImg<unsigned char> ogImage,
 		for (int j = 0; j < rows; j++) {
 
 			//We create the tile related with the cropped image.
-			Tile tile(id, ogImage.get_crop(x * i + x, y * j + y, x * i, y * j));
+			Tile tile(id, ogImage.get_crop(x * j + x, y * i + y, x * j, y * i));
 
-			tileArray(j, i) = tile;
+			tileArray(i, j) = tile;
 			id++;
 		}
 	}
@@ -28,11 +28,11 @@ void showTiles(int cols, int rows, auto tileArray, CImgDisplay *draw_disp) {
 	CImg<unsigned char> auxImage("puzzle.png");
 	for (int z = 0; z < cols; z++) {
 		for (int w = 0; w < rows; w++) {
-			cout << w << " Row " << z << " Col " << endl;
-			cout << "Identifier: " << tileArray(w, z).getIdentifier() << endl;
-			auxImage = tileArray(w, z).getImage();
+			cout << z << " Row " << w << " Col " << endl;
+			cout << "Identifier: " << tileArray(z, w).getIdentifier() << endl;
+			auxImage = tileArray(z, w).getImage();
 			draw_disp->display(auxImage);
-			ady = tileArray.getAdjacents(w, z); //test
+			ady = tileArray.getAdjacents(z, w);
 			for (std::list<Tile>::iterator it = ady->begin(), end = ady->end();
 					it != end; ++it) {
 				cout << "Adyacent with: " << (*it).getIdentifier() << endl;
@@ -46,7 +46,12 @@ void showTiles(int cols, int rows, auto tileArray, CImgDisplay *draw_disp) {
 CImg<unsigned char> reconstructImage(int cols, int rows, int x, int y, CImg<unsigned char> ogImage, auto tileArray) {
 	for (int q = 0; q < cols; q++) {
 		for (int s = 0; s < rows; s++) {
-			ogImage.draw_image(s * x, q * y, tileArray(q, s).getImage());
+			if(tileArray(q, s).getIdentifier()==1){
+				CImg<unsigned char> aux(tileArray(q, s).getImage().width(),tileArray(q, s).getImage().height(),1,3,0);
+				ogImage.draw_image(s * x, q * y, aux);
+			}else{
+				ogImage.draw_image(s * x, q * y, tileArray(q, s).getImage());
+			}
 		}
 	}
 
