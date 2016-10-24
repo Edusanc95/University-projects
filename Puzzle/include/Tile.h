@@ -12,6 +12,7 @@ public:
 
 	const int getIdentifier();
 	const CImg<unsigned char> getImage();
+	void setIdentifier(int identifier);
 
 private:
 	int _identifier;

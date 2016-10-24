@@ -3,19 +3,28 @@
 #include "CImg.h"
 #include "matrix.h"
 #include <list>
+#include <vector>
+#include <sstream>
 using namespace std;
 using namespace cimg_library;
+
+//This is the comparation function needed for sort() for vectors
+bool compareFunction(Tile i, Tile j){
+    return (i.getIdentifier()<j.getIdentifier());
+}
+
 
 //This method crops the Image and stores it in a custom object of type Matrix, which simulates an array, called tileArray.
 void cropImage(int cols, int rows, int x, int y, CImg<unsigned char> ogImage,
 		auto &tileArray) {
+
 	int id = 1; //Identifier for the different images
 	for (int i = 0; i < cols; i++) {
 		for (int j = 0; j < rows; j++) {
 
 			//We create the tile related with the cropped image.
-			Tile tile(id, ogImage.get_crop(x * j + x, y * i + y, x * j, y * i));
-
+			//Tile tile(id, ogImage.get_crop(x * j + x, y * i + y, x * j, y * i));
+			Tile tile(id, ogImage.get_crop(((x * j + x)-1), ((y * i + y)-1), x * j, y * i));
 			tileArray(i, j) = tile;
 			id++;
 		}
@@ -43,52 +52,117 @@ void showTiles(int cols, int rows, auto tileArray, CImgDisplay *draw_disp) {
 }
 
 //This method reconstructs the Image from the Matrix of Tiles given and returns it.
-CImg<unsigned char> reconstructImage(int cols, int rows, int x, int y, CImg<unsigned char> ogImage, auto tileArray) {
+CImg<unsigned char> reconstructImage(int cols, int rows, int x, int y,
+		CImg<unsigned char> ogImage, auto tileArray) {
 	for (int q = 0; q < cols; q++) {
 		for (int s = 0; s < rows; s++) {
-			if(tileArray(q, s).getIdentifier()==1){
-				CImg<unsigned char> aux(tileArray(q, s).getImage().width(),tileArray(q, s).getImage().height(),1,3,0);
-				ogImage.draw_image(s * x, q * y, aux);
-			}else{
-				ogImage.draw_image(s * x, q * y, tileArray(q, s).getImage());
-			}
+			//This is used when we don't have an initial black tile
+			/*if(tileArray(q, s).getIdentifier()==1){
+			 CImg<unsigned char> aux(tileArray(q, s).getImage().width(),tileArray(q, s).getImage().height(),1,3,0);
+			 ogImage.draw_image(s * x, q * y, aux);
+			 }else{
+			 ogImage.draw_image(s * x, q * y, tileArray(q, s).getImage());
+			 }*/
+			ogImage.draw_image(s * x, q * y, tileArray(q, s).getImage());
 		}
 	}
 
 	return ogImage;
 }
 
+//This method changes the identifiers of the tiles of the messy array to the ones of the og image so we can reconstruct it.
+void solvePuzzle(int cols, int rows, auto &tileArray, auto &messyArray) {
+	for (int q = 0; q < cols; q++) {
+		for (int s = 0; s < rows; s++) {
+
+			for (int i = 0; i < cols; i++) {
+				for (int j = 0; j < rows; j++) {
+					if (messyArray(s, q).getImage() == tileArray(j, i).getImage()) {
+						messyArray(s, q).setIdentifier(tileArray(j, i).getIdentifier());
+
+					}
+				}
+			}
+
+		}
+	}
+
+	//Now we get all the data from the matrix into a vector.
+	std::vector<Tile> vect;
+	for (int i = 0; i < cols; i++){
+		for (int j = 0; j < rows; j++){
+			vect.push_back(tileArray(j, i));
+		}
+	}
+
+	//and sort the vector using standart sort() function
+	std::sort(vect.begin(), vect.end(), compareFunction);
+
+	//Finally, we put the data back into the matrix
+	for (int i = 0; i < cols; i++){
+	        for (int j = 0; j < rows; j++){
+	            messyArray(j,i) = vect.at(j*rows + i);
+
+	        }
+	}
+}
+
+template <typename T>
+T cinitialize(std::istream & is) noexcept
+{
+    T x;
+    return (is && is >> x) ? x : T();
+}
+
+
 int main(int argc, char **argv) {
 
+
+	int cols, rows;
+	string puzzle;
+
+	cout << "Introduce number of columns:" << endl;
+	cin >> cols;
+	cout << "Introduce number of rows:" << endl;
+	cin >> rows;
+
 	CImg<unsigned char> ogImage("puzzle.png");
-	CImgDisplay main_disp(ogImage, "OG Image"), draw_disp(ogImage,
+	CImg<unsigned char> messyImage("messyPuzzle.png");
+
+	CImgDisplay main_disp(ogImage, "OG Image"), draw_disp(messyImage,
 			"Cropped Image");
 
-	const int cols = 5;
-	const int rows = 5;
+	//ogImage
+	Matrix<Tile, 10, 10> tileArray; // size_x, size_y
 
-	Matrix<Tile, cols, rows> tileArray; // size_x, size_y
+	//Image that's not in order
+	Matrix<Tile, 10, 10> messyArray; // size_x, size_y
 
-	//Tile* tileArray[rows][cols];
-
-	int x = cimg_option("-x", ogImage.width() / cols, "x crop"); //width
-	int y = cimg_option("-y", ogImage.height() / rows, "y crop"); //height
+	int x = ogImage.width() / cols; //width
+	int y = ogImage.height() / rows; //height
 
 	cropImage(cols, rows, x, y, ogImage, tileArray);
+	cropImage(cols, rows, x, y, messyImage, messyArray);
 
 	while (!main_disp.is_closed()) {
 		main_disp.wait();
 		if (main_disp.button() && main_disp.mouse_y() >= 0) {
 
 			//Showing the tiles and their adyacents one by one
-			showTiles(cols, rows, tileArray, &draw_disp);
+			//showTiles(cols, rows, tileArray, &draw_disp);
 
 			//Shuffle randomly the matrix of tiles.
-			tileArray.shuffle();
+			//tileArray.shuffle();
+
+			//reconstructImage(cols, rows, x, y, ogImage, tileArray).save("messyPuzzle.png");
 
 			//Reconstruction of the image.
-			main_disp.display(reconstructImage(cols, rows, x, y, ogImage, tileArray));
-			ogImage.save("messyPuzzle.png");
+			solvePuzzle(cols, rows, tileArray, messyArray);
+
+			main_disp.display(
+					reconstructImage(cols, rows, x, y, ogImage, tileArray));
+			draw_disp.display(
+					reconstructImage(cols, rows, x, y, messyImage, messyArray));
 
 		}
 	}

@@ -31,3 +31,7 @@ const CImg<unsigned char> Tile::getImage(){
 	return _image;
 }
 
+void Tile::setIdentifier(int identifier){
+	_identifier = identifier;
+}
+
