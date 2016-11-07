@@ -89,7 +89,7 @@ CImg<unsigned char> reconstructImage(int cols, int rows, int x, int y,
 //This method changes the identifiers of the tiles of the messy array to the ones of the og image so we can reconstruct it.
 void solvePuzzle(int cols, int rows, Matrix<Tile, 10, 10> &tileArray,
 		Matrix<Tile, 10, 10> &messyArray) {
-	bool sorted = false;
+
 	for (int q = 0; q < cols; q++) {
 		for (int s = 0; s < rows; s++) {
 

@@ -9,7 +9,8 @@
 #define INCLUDE_MATRIX_H_
 #include <array>
 #include <list>
-#include <iterator>
+#include <algorithm> // For random_shuffle
+#include <iterator>  // For the iterators
 #include <ctime>
 
 template<class T, size_t rows, size_t cols>
@@ -31,49 +32,82 @@ public:
 	//Will be fixed later
 	void shuffle() {
 		std::srand(time(NULL));
-			//std::random_shuffle( &get(0,0), &get(0,0) + sizeof(m_Data)/sizeof(get(0,0)) );
+		//std::random_shuffle( &get(0,0), &get(0,0) + sizeof(m_Data)/sizeof(get(0,0)) );
 		std::random_shuffle(std::begin(m_Data), std::end(m_Data));
 	}
 
 	std::list<T>* getAdjacents(int x, int y) {
-		std::list<T>* result = new list<T>;
+		std::list<T>* result = new std::list<T>;
 
 		T top, midLeft, midRight, bot;
-		if(y-1>=0) {
+		if (y - 1 >= 0) {
 			top = get(x, y - 1);
 
 		}
 
-		if(x-1>=0) {
+		if (x - 1 >= 0) {
 			midLeft = get(x - 1, y);
 
 		}
 
-		if(x+1<cols) {
+		if (x + 1 < cols) {
 			midRight = get(x + 1, y);
 
 		}
 
-		if(y+1<rows) {
+		if (y + 1 < rows) {
 			bot = get(x, y + 1);
 
 		}
 
-		if(y-1>=0)
-		result->push_back(top);
+		if (y - 1 >= 0)
+			result->push_back(top);
 
-		if(y+1<rows)
-		result->push_back(bot);
+		if (y + 1 < rows)
+			result->push_back(bot);
 
-		if(x-1>=0)
-		result->push_back(midLeft);
+		if (x - 1 >= 0)
+			result->push_back(midLeft);
 
-		if(x+1<cols)
-		result->push_back(midRight);
+		if (x + 1 < cols)
+			result->push_back(midRight);
 
 		return result;
 	}
 
+	// Returns possible movements based on the specified position, the returning list has 4 booleans ordered like:
+	// 1st: Top 2nd: Bot 3rd: MidLeft 4th: MidRight
+
+	std::list<bool> getMovements(int x, int y) {
+		std::list<bool>* movements = new std::list<bool>;
+		bool top = false, midLeft = false, midRight = false, bot = false;
+
+		if (y - 1 >= 0) {
+			top = true;
+		}
+
+		if (x - 1 >= 0) {
+			midLeft = true;
+
+		}
+
+		if (x + 1 < cols) {
+			midRight = true;
+
+		}
+
+		if (y + 1 < rows) {
+			bot = true;
+
+		}
+
+		movements->push_back(top);
+		movements->push_back(bot);
+		movements->push_back(midLeft);
+		movements->push_back(midRight);
+
+		return movements;
+	}
 	// more methods go here
 }
 ;
