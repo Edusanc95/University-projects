@@ -129,7 +129,7 @@ void solvePuzzle(int cols, int rows, Matrix<Tile, 10, 10> &tileArray,
 	//and sort the vector using standart sort() function
 	std::sort(vect.begin(), vect.end(), compareFunction);
 
-
+	/*
 	std::cout << "Sorted vector contains:";
 	for (std::vector<Tile>::iterator it = vect.begin(); it != vect.end();
 			++it)
@@ -142,6 +142,7 @@ void solvePuzzle(int cols, int rows, Matrix<Tile, 10, 10> &tileArray,
 			messyArray(i, j) = vect.at(i * rows + j);
 		}
 	}
+	*/
 }
 
 template<typename T>

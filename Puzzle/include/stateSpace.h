@@ -8,6 +8,10 @@
 #ifndef INCLUDE_STATESPACE_H_
 #define INCLUDE_STATESPACE_H_
 #include "state.h"
+#include "node.h"
+#include "matrix.h"
+#include <list>
+#include <iostream>
 
 class stateSpace {
 public:
@@ -16,7 +20,7 @@ public:
 
 	bool isValid(state &tileState);
 	bool isGoal(state &tileState);
-	void Successor(state &tileState);
+	list<node>* Successor(node &node);
 
 private:
 	state &_goalState;

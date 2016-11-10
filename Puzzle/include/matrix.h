@@ -78,7 +78,7 @@ public:
 	// Returns possible movements based on the specified position, the returning list has 4 booleans ordered like:
 	// 1st: Top 2nd: Bot 3rd: MidLeft 4th: MidRight
 
-	std::list<bool> getMovements(int x, int y) {
+	std::list<bool>* getMovements(int x, int y) {
 		std::list<bool>* movements = new std::list<bool>;
 		bool top = false, midLeft = false, midRight = false, bot = false;
 
@@ -107,6 +107,16 @@ public:
 		movements->push_back(midRight);
 
 		return movements;
+	}
+
+	//We change the position of 2 objects.
+	void swap(int x1, int y1, int x2, int y2){
+		T aux1, aux2;
+		aux1 = get(x1, y1);
+		aux2 = get(x2, y2);
+
+		get(x2, y2) = aux1;
+		get(x1, y1) = aux2;
 	}
 	// more methods go here
 }

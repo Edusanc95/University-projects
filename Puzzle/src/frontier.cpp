@@ -20,15 +20,16 @@ Frontier::~Frontier(){
 }
 
 void Frontier::insert(node *auxiliar){
-	_frontier.push_back(auxiliar);
+	_frontier.push(*auxiliar);
 	//Very important to order the values correctly in the frontier
-	std::sort(_frontier.begin(), _frontier.end(), compareNode);
+	//std::sort(_frontier.begin(), _frontier.end(), compareNode);
+	//_frontier.sort(compareNode);
 }
 
 //Remove AND get first
-node* Frontier::removeFirst(){
-	node *aux = _frontier.front();
-	_frontier.erase(_frontier.begin());
+node Frontier::removeFirst(){
+	node aux = _frontier.top();
+	_frontier.pop();
 	return aux;
 }
 
