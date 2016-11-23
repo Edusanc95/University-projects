@@ -49,13 +49,13 @@ bool stateSpace::isGoal(state &tileState) {
 	return aux;
 }
 
-list<node>* stateSpace::Successor(node &pnode){
+list<Sucessor>* stateSpace::Successor(state &pstate){
 
-	list<node>* nodes = new list<node>();
+	list<Sucessor>* sucessors = new list<Sucessor>();
 
-	list<bool>* possibleMovements = pnode.getState().getTileArray().getMovements(pnode.getState().getX(), pnode.getState().getY());
+	list<bool>* possibleMovements = pstate.getTileArray().getMovements(pstate.getX(), pstate.getY());
 
-	node* aux;
+	Sucessor* aux;
 	Matrix<Tile, 10, 10> auxTileArray;
 	state children(auxTileArray,0,0,0,0);
 	int i = 1;
@@ -65,36 +65,36 @@ list<node>* stateSpace::Successor(node &pnode){
 			switch(i){
 			//top
 			case 1 :
-				children = pnode.getState();
+				children = pstate;
 				children.getTileArray().swap(children.getX(), children.getY(), children.getX(), children.getY() - 1);
-				aux = new node(&pnode, children, pnode.getCost(), "top", pnode.getDepth()+1, 0);
+				aux = new Sucessor(children, 1, "top");
 				break;
 			//bot
 			case 2 :
-				children = pnode.getState();
+				children = pstate;
 				children.getTileArray().swap(children.getX(), children.getY(), children.getX(), children.getY() + 1);
-				aux = new node(&pnode, children, pnode.getCost(), "bot", pnode.getDepth()+1, 0);
+				aux = new Sucessor(children, 1, "bot");
 				break;
 			//midLeft
 			case 3 :
-				children = pnode.getState();
+				children = pstate;
 				children.getTileArray().swap(children.getX(), children.getY(), children.getX() - 1, children.getY() - 1);
-				aux = new node(&pnode, children, pnode.getCost(), "midLeft", pnode.getDepth()+1, 0);
+				aux = new Sucessor(children, 1, "midLeft");
 				break;
 			//midRight
 			case 4 :
-				children = pnode.getState();
+				children = pstate;
 				children.getTileArray().swap(children.getX(), children.getY(), children.getX() + 1, children.getY() - 1);
-				aux = new node(&pnode, children, pnode.getCost(), "midRight",  pnode.getDepth()+1, 0);
+				aux = new Sucessor(children, 1, "midRight");
 				break;
 			default :
 				break;
 			}
-			nodes->push_back(*aux);
+			sucessors->push_back(*aux);
 		}
 
 		i++;
 	}
 
-	return nodes;
+	return sucessors;
 }

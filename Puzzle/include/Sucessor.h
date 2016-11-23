@@ -12,7 +12,7 @@
 
 class Sucessor {
 public:
-	Sucessor(string action, state state, int cost);
+	Sucessor(state state, int cost, string action);
 	~Sucessor();
 	state getState();
 	int getCost();

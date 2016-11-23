@@ -6,7 +6,7 @@
  */
 #include "Sucessor.h"
 
-Sucessor::Sucessor(string action, state state, int cost): _action(action), _state(state), _cost(cost){
+Sucessor::Sucessor(state state, int cost, string action): _action(action), _state(state), _cost(cost){
 
 }
 
