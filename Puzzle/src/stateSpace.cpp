@@ -32,17 +32,13 @@ bool stateSpace::isGoal(state &tileState) {
 	for (int q = 0; q < cols; q++) {
 		for (int s = 0; s < rows; s++) {
 
-
-			for (int i = 0; i < cols && aux; i++) {
-				for (int j = 0; j < rows && aux; j++) {
 					if (messyArray(q, s).getImage()
-							!= tileArray(i, j).getImage()) {
+							!= tileArray(q, s).getImage()) {
 
 						cout << "Not the same" << endl;
 						aux = false;
 					}
-				}
-			}
+
 
 		}
 	}
