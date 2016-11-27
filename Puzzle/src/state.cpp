@@ -16,22 +16,22 @@ state::~state(){
 
 }
 
-Matrix<Tile, 10, 10> state::getTileArray(){
+Matrix<Tile, 10, 10> state::getTileArray() const{
 	return _tileArray;
 }
 
-int state::getX(){
+int state::getX() const{
 	return _x;
 }
 
-int state::getY(){
+int state::getY() const{
 	return _y;
 }
 
-int state::getCols(){
+int state::getCols() const{
 	return _cols;
 }
 
-int state::getRows(){
+int state::getRows() const{
 	return _rows;
 }

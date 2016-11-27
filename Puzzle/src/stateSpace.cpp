@@ -16,11 +16,11 @@ stateSpace::~stateSpace() {
 }
 
 //Ask what we need to do here
-bool stateSpace::isValid(state &tileState) {
+bool stateSpace::isValid(const state &tileState) {
 	return true;
 }
 
-bool stateSpace::isGoal(state &tileState) {
+bool stateSpace::isGoal(const state &tileState) {
 	bool aux = true;
 	int cols, rows;
 
@@ -32,8 +32,8 @@ bool stateSpace::isGoal(state &tileState) {
 	for (int q = 0; q < cols; q++) {
 		for (int s = 0; s < rows; s++) {
 
-					if (messyArray(q, s).getImage()
-							!= tileArray(q, s).getImage()) {
+					if (messyArray(q, s).getIdentifier()
+							!= tileArray(q, s).getIdentifier()) {
 
 						cout << "Not the same" << endl;
 						aux = false;
@@ -45,7 +45,7 @@ bool stateSpace::isGoal(state &tileState) {
 	return aux;
 }
 
-list<Sucessor>* stateSpace::Successor(state &pstate){
+list<Sucessor>* stateSpace::Successor(const state &pstate){
 
 	list<Sucessor>* sucessors = new list<Sucessor>();
 

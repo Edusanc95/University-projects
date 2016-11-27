@@ -17,6 +17,11 @@ Sucessor::~Sucessor(){
 state Sucessor::getState(){
 	return _state;
 }
- int Sucessor::getCost(){
+
+int Sucessor::getCost(){
 	 return _cost;
- }
+}
+
+string Sucessor::getAction(){
+	return _action;
+}

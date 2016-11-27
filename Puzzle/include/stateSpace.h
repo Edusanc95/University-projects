@@ -19,9 +19,9 @@ public:
 	stateSpace(state &goalState);
 	~stateSpace();
 
-	bool isValid(state &tileState);
-	bool isGoal(state &tileState);
-	list<Sucessor>* Successor(state &pstate);
+	bool isValid(const state &tileState);
+	bool isGoal(const state &tileState);
+	list<Sucessor>* Successor(const state &pstate);
 
 private:
 	state &_goalState;

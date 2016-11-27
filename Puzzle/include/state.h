@@ -15,11 +15,11 @@ public:
 	state(Matrix<Tile, 10, 10> tileArray, int x, int y, int cols, int rows);
 	~state();
 
-	Matrix<Tile, 10, 10> getTileArray();
-	int getX();
-	int getY();
-	int getCols();
-	int getRows();
+	Matrix<Tile, 10, 10> getTileArray() const;
+	int getX() const;
+	int getY() const;
+	int getCols() const;
+	int getRows() const;
 
 private:
 	Matrix<Tile, 10, 10> _tileArray;

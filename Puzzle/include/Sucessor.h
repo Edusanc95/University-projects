@@ -16,6 +16,7 @@ public:
 	~Sucessor();
 	state getState();
 	int getCost();
+	string getAction();
 private:
 	string _action;
 	state _state;
