@@ -18,6 +18,7 @@ public:
 	state getState();
 	int getCost();
 	int getDepth();
+	string getAction();
 
 private:
 	//Node information

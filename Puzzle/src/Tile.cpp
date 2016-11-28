@@ -5,7 +5,7 @@ using namespace std;
 
 Tile::Tile() {
   //cout << "[!] New tile created [!]" << endl;
-
+  //_identifier = 0;
 }
 
 Tile::Tile(int identifier, CImg<unsigned char> image) {

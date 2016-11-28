@@ -6,8 +6,8 @@ using namespace cimg_library;
 
 class Tile {
 public:
-	Tile();
 	Tile(int identifier, CImg<unsigned char> _image);
+	Tile();
 	~Tile();
 
 	const int getIdentifier();

@@ -30,3 +30,7 @@ int node::getDepth(){
 int node::getCost(){
 	 return _cost;
 }
+
+string node::getAction(){
+	return _action;
+}
