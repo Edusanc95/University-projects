@@ -12,10 +12,10 @@
 
 class state{
 public:
-	state(Matrix<Tile, 4, 4>* tileArray, int x, int y, int cols, int rows);
+	state(Matrix<Tile, 4, 4> tileArray, int x, int y, int cols, int rows);
 	~state();
 
-	Matrix<Tile, 4, 4>* getTileArray() const;
+	Matrix<Tile, 4, 4> getTileArray() const;
 	int getX() const;
 	int getY() const;
 	void setX(int x);
@@ -24,7 +24,7 @@ public:
 	int getRows() const;
 
 private:
-	Matrix<Tile, 4, 4>* _tileArray;
+	Matrix<Tile, 4, 4> _tileArray;
 
 	//Position of the black tile
 	int _x, _y;

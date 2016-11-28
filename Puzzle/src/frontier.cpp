@@ -37,3 +37,6 @@ bool Frontier::isEmpty(){
 	return _frontier.empty();
 }
 
+int Frontier::size(){
+	return _frontier.size();
+}

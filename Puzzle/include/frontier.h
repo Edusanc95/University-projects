@@ -19,7 +19,7 @@ public:
 	void insert(node *auxiliar);
 	node* removeFirst();
 	bool isEmpty();
-
+	int size();
 private:
 
 	struct Comparation {

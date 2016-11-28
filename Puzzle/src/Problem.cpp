@@ -33,16 +33,24 @@ bool Problem::boundedSearch(string strategy, int max_Depth){
 	_reconstructing_disp.display(auxImage);
 	while(!isSolution && !pFrontier->isEmpty() && iterator < maxAux && !_reconstructing_disp.is_closed()){
 		n_actual = pFrontier->removeFirst();
+
 		cout << n_actual->getAction()<< endl;
-		_ImageManipulator.showIds(n_actual->getState().getCols(), n_actual->getState().getRows(), *(n_actual->getState().getTileArray()));
+		_ImageManipulator.showIds(n_actual->getState().getCols(), n_actual->getState().getRows(), n_actual->getState().getTileArray());
 		//Representation of what's happening on screen, can be erased without problems.
 		//_ImageManipulator.showTiles(n_actual->getState().getCols(),  n_actual->getState().getRows(), *(n_actual->getState().getTileArray()), &_reconstructing_disp);
+
 		auxImage =_ImageManipulator.reconstructImage(n_actual->getState().getCols()
 				   ,n_actual->getState().getRows()
 				   ,auxImage.width() / n_actual->getState().getRows()
 				   ,auxImage.height() / n_actual->getState().getCols()
 				   ,auxImage
-				   ,*(n_actual->getState().getTileArray()));
+				   ,(n_actual->getState().getTileArray()));
+
+		/*
+		_ImageManipulator.equalImage(n_actual->getState().getCols(), n_actual->getState().getRows(), *_initialState.getTileArray(),
+				*n_actual->getState().getTileArray());
+		*/
+
 		_reconstructing_disp.display(auxImage);
 
 		sleep(1);

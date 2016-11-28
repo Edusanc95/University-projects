@@ -81,8 +81,8 @@ int main(int argc, char **argv) {
 						}
 					}
 			}
-			state initialState(&messyArray, posxx, posyy, cols, rows);
-			state goalState(&tileArray, posx, posy, cols, rows);
+			state initialState(messyArray, posxx, posyy, cols, rows);
+			state goalState(tileArray, posx, posy, cols, rows);
 
 			stateSpace problemStateSpace(goalState);
 			Problem puzzleProblem(initialState, problemStateSpace);

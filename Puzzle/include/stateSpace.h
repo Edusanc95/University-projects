@@ -22,7 +22,7 @@ public:
 	bool isValid(const state &tileState);
 	bool isGoal(const state &tileState);
 	list<Sucessor>* Successor(const state &pstate);
-
+	state& getGoalState();
 private:
 	state &_goalState;
 
