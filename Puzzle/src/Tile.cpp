@@ -35,3 +35,6 @@ void Tile::setIdentifier(int identifier){
 	_identifier = identifier;
 }
 
+void Tile::setImage(CImg<unsigned char> image){
+	image = _image;
+}

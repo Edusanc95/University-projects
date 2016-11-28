@@ -71,9 +71,11 @@ list<Sucessor>* stateSpace::Successor(const state pstate){
 				auxTileArray1.makeEqual(*pstate.getTileArray(), pstate.getRows(), pstate.getCols());
 
 				//children.getTileArray()->swap(children.getX(), children.getY(), children.getX()-1, children.getY() );
-				Tile aux1(pstate.getTileArray()->get(pstate.getX(),pstate.getY()));
+				Tile aux1(pstate.getTileArray()->get(pstate.getX(),pstate.getY()).getIdentifier(),
+						pstate.getTileArray()->get(pstate.getX(),pstate.getY()).getImage());
 				//aux1 = auxTileArray1(pstate.getX(), pstate.getY());
-				Tile aux2(pstate.getTileArray()->get(pstate.getX()-1,pstate.getY()));
+				Tile aux2(pstate.getTileArray()->get(pstate.getX()-1,pstate.getY()).getIdentifier(),
+						pstate.getTileArray()->get(pstate.getX()-1,pstate.getY()).getImage());
 				//aux2 = auxTileArray1(pstate.getX()-1, pstate.getY());
 				auxTileArray1(pstate.getX(), pstate.getY()) = aux2;
 				auxTileArray1(pstate.getX()-1, pstate.getY()) = aux1;
@@ -89,9 +91,11 @@ list<Sucessor>* stateSpace::Successor(const state pstate){
 			}else if(i==2){
 				auxTileArray2.makeEqual(*pstate.getTileArray(), pstate.getRows(), pstate.getCols());
 				//children.getTileArray()->swap(children.getX(), children.getY(), children.getX()+1, children.getY() );
-				Tile aux1(pstate.getTileArray()->get(pstate.getX(),pstate.getY()));
+				Tile aux1(pstate.getTileArray()->get(pstate.getX(),pstate.getY()).getIdentifier(),
+						pstate.getTileArray()->get(pstate.getX(),pstate.getY()).getImage());
 				//aux1 = auxTileArray2(pstate.getX(), pstate.getY());
-				Tile aux2(pstate.getTileArray()->get(pstate.getX()+1,pstate.getY()));
+				Tile aux2(pstate.getTileArray()->get(pstate.getX()+1,pstate.getY()).getIdentifier(),
+						pstate.getTileArray()->get(pstate.getX()+1,pstate.getY()).getImage());
 				//aux2 = auxTileArray2(pstate.getX()+1, pstate.getY());
 				auxTileArray2(pstate.getX(), pstate.getY()) = aux2;
 				auxTileArray2(pstate.getX()+1, pstate.getY()) = aux1;
@@ -105,9 +109,11 @@ list<Sucessor>* stateSpace::Successor(const state pstate){
 			}else if(i==3){
 				auxTileArray3.makeEqual(*pstate.getTileArray(), pstate.getRows(), pstate.getCols());
 				//children.getTileArray()->swap(children.getX(), children.getY(), children.getX() , children.getY()-1);
-				Tile aux1(pstate.getTileArray()->get(pstate.getX(),pstate.getY()));
+				Tile aux1(pstate.getTileArray()->get(pstate.getX(),pstate.getY()).getIdentifier(),
+						pstate.getTileArray()->get(pstate.getX(),pstate.getY()).getImage());
 				//aux1 = auxTileArray3(pstate.getX(), pstate.getY());
-				Tile aux2(pstate.getTileArray()->get(pstate.getX(),pstate.getY()-1));
+				Tile aux2(pstate.getTileArray()->get(pstate.getX(),pstate.getY()-1).getIdentifier(),
+						pstate.getTileArray()->get(pstate.getX(),pstate.getY()-1).getImage());
 				//aux2 = auxTileArray3(pstate.getX(), pstate.getY()-1);
 				auxTileArray3(pstate.getX(), pstate.getY()) = aux2;
 				auxTileArray3(pstate.getX(), pstate.getY()-1) = aux1;
@@ -123,9 +129,11 @@ list<Sucessor>* stateSpace::Successor(const state pstate){
 				auxTileArray4.makeEqual(*pstate.getTileArray(), pstate.getRows(), pstate.getCols());
 
 				//children.getTileArray()->swap(children.getX(), children.getY(), children.getX() , children.getY()+1);
-				Tile aux1(pstate.getTileArray()->get(pstate.getX(),pstate.getY()));
+				Tile aux1(pstate.getTileArray()->get(pstate.getX(),pstate.getY()).getIdentifier(),
+						pstate.getTileArray()->get(pstate.getX(),pstate.getY()).getImage());
 				//aux1 = auxTileArray4(pstate.getX(), pstate.getY());
-				Tile aux2(pstate.getTileArray()->get(pstate.getX(),pstate.getY()+1));
+				Tile aux2(pstate.getTileArray()->get(pstate.getX(),pstate.getY()+1).getIdentifier(),
+						pstate.getTileArray()->get(pstate.getX(),pstate.getY()+1).getImage());
 				//aux2 = auxTileArray4(pstate.getX(), pstate.getY()+1);
 				auxTileArray4(pstate.getX(), pstate.getY()) = aux2;
 				auxTileArray4(pstate.getX(), pstate.getY()+1) = aux1;
