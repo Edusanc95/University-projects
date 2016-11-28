@@ -26,6 +26,10 @@ public:
 			return m_Data[y * cols + x];
 	}
 
+	std::array<T,rows*cols>& getMData(){
+		return m_Data;
+	}
+
 	T& operator()(size_t y, size_t x) {
 		return m_Data[y * cols + x];
 	}
@@ -38,7 +42,6 @@ public:
 		std::random_shuffle(std::begin(m_Data), std::end(m_Data));
 	}
 
-	/*
 	std::list<T>* getAdjacents(int x, int y) {
 		std::list<T>* result = new std::list<T>;
 
@@ -77,7 +80,7 @@ public:
 
 		return result;
 	}
-	*/
+
 	// Returns possible movements based on the specified position, the returning list has 4 booleans ordered like:
 	// 1st: Top 2nd: Bot 3rd: MidLeft 4th: MidRight
 
@@ -126,11 +129,12 @@ public:
 	//Important, they have to be the same size
 	// x and y is the maximum number of rows and cols.
 	void makeEqual(Matrix<T,rows,cols> aux, int x, int y){
-		for(int i = 0; i<x; i++){
+		/*for(int i = 0; i<x; i++){
 			for(int j = 0; j<y; j++){
-				get(i,j) = aux(i,j);
+				this->get(i,j) = aux.get(i,j);
 			}
-		}
+		}*/
+		m_Data = aux.getMData();
 	}
 	// more methods go here
 }

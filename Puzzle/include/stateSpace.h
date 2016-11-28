@@ -21,7 +21,7 @@ public:
 
 	bool isValid(const state &tileState);
 	bool isGoal(const state &tileState);
-	list<Sucessor>* Successor(const state pstate);
+	list<Sucessor>* Successor(const state &pstate);
 
 private:
 	state &_goalState;

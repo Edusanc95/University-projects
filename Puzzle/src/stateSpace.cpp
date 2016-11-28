@@ -46,7 +46,7 @@ bool stateSpace::isGoal(const state &tileState) {
 	return aux;
 }
 
-list<Sucessor>* stateSpace::Successor(const state pstate){
+list<Sucessor>* stateSpace::Successor(const state &pstate){
 
 	list<Sucessor>* sucessors = new list<Sucessor>();
 
@@ -114,6 +114,7 @@ list<Sucessor>* stateSpace::Successor(const state pstate){
 				//aux1 = auxTileArray3(pstate.getX(), pstate.getY());
 				Tile aux2(pstate.getTileArray()->get(pstate.getX(),pstate.getY()-1).getIdentifier(),
 						pstate.getTileArray()->get(pstate.getX(),pstate.getY()-1).getImage());
+
 				//aux2 = auxTileArray3(pstate.getX(), pstate.getY()-1);
 				auxTileArray3(pstate.getX(), pstate.getY()) = aux2;
 				auxTileArray3(pstate.getX(), pstate.getY()-1) = aux1;

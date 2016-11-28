@@ -29,12 +29,14 @@ bool Problem::boundedSearch(string strategy, int max_Depth){
 	int iterator = 0;
 
 	//Search loop
-	//Remember to eliminate iterator and maxAux.
-	while(!isSolution && !pFrontier->isEmpty() && iterator < maxAux){
+	//Remember to eliminate iterator and maxAux, and the _reconstructing_disp if needed.
+	_reconstructing_disp.display(auxImage);
+	while(!isSolution && !pFrontier->isEmpty() && iterator < maxAux && !_reconstructing_disp.is_closed()){
 		n_actual = pFrontier->removeFirst();
 		cout << n_actual->getAction()<< endl;
 		_ImageManipulator.showIds(n_actual->getState().getCols(), n_actual->getState().getRows(), *(n_actual->getState().getTileArray()));
 		//Representation of what's happening on screen, can be erased without problems.
+		//_ImageManipulator.showTiles(n_actual->getState().getCols(),  n_actual->getState().getRows(), *(n_actual->getState().getTileArray()), &_reconstructing_disp);
 		auxImage =_ImageManipulator.reconstructImage(n_actual->getState().getCols()
 				   ,n_actual->getState().getRows()
 				   ,auxImage.width() / n_actual->getState().getRows()

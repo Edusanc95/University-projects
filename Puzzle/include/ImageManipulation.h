@@ -51,8 +51,8 @@ public:
 		}
 	}
 
-	/*
-	This method shows in a window the different tiles of the image, with the corresponding adjacent tiles in the standard output
+
+	//This method shows in a window the different tiles of the image, with the corresponding adjacent tiles in the standard output
 	void showTiles(int cols, int rows, Matrix<Tile, 4, 4> tileArray,
 			CImgDisplay *draw_disp) {
 		std::list<Tile>* ady = new list<Tile>(4); //To store the adyacents
@@ -72,7 +72,7 @@ public:
 			}
 		}
 	}
-	*/
+
 	/*This method reconstructs the Image from the Matrix of Tiles given and returns it.*/
 	CImg<unsigned char> reconstructImage(int cols, int rows, int x, int y,
 			CImg<unsigned char> ogImage, Matrix<Tile, 4, 4> tileArray) {
