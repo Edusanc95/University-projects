@@ -21,7 +21,7 @@ public:
 	~Problem();
 
 	bool boundedSearch(string strategy, int max_Depth);
-	bool Search();
+	bool Search(string strategy, int max_Depth, int inc);
 
 private:
 	state _initialState;
