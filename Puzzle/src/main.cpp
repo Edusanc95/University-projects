@@ -7,6 +7,7 @@
 #include <list>
 #include <vector>
 #include <sstream>
+#include "TileMatrix.h"
 
 using namespace std;
 using namespace cimg_library;
@@ -41,10 +42,10 @@ int main(int argc, char **argv) {
 			"Cropped Image");
 
 	//ogImage
-	Matrix<Tile, 4, 4> tileArray; // size_x, size_y
+	TileMatrix tileArray(rows,cols); // size_x, size_y
 
 	//Image that's not in order
-	Matrix<Tile, 4, 4> messyArray; // size_x, size_y
+	TileMatrix messyArray(rows, cols); // size_x, size_y
 
 	int x = ogImage.width() / rows; //width
 	int y = ogImage.height() / cols; //height

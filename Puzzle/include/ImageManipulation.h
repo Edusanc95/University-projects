@@ -9,6 +9,7 @@
 #define INCLUDE_IMAGEMANIPULATION_H_
 
 #include "CImg.h"
+#include "TileMatrix.h"
 #include "matrix.h"
 #include <vector>
 using namespace cimg_library;
@@ -24,7 +25,7 @@ public:
 
 	/*This method crops the Image and stores it in a custom object of type Matrix, which simulates an array, called tileArray.*/
 	void cropImage(int cols, int rows, int x, int y,
-			CImg<unsigned char> ogImage, Matrix<Tile, 4, 4> &tileArray) {
+			CImg<unsigned char> ogImage, TileMatrix &tileArray) {
 
 		int id = 1; //Identifier for the different images
 		for (int i = 0; i < cols; i++) {
@@ -54,7 +55,7 @@ public:
 	}
 
 	//This method shows in a window the different tiles of the image, with the corresponding adjacent tiles in the standard output
-	void showTiles(int cols, int rows, Matrix<Tile, 4, 4> tileArray,
+	void showTiles(int cols, int rows, TileMatrix tileArray,
 			CImgDisplay *draw_disp) {
 		std::list<Tile>* ady = new list<Tile>(4); //To store the adyacents
 		CImg<unsigned char> auxImage("puzzle.png");
@@ -77,7 +78,7 @@ public:
 
 	/*This method reconstructs the Image from the Matrix of Tiles given and returns it.*/
 	CImg<unsigned char> reconstructImage(int cols, int rows, int x, int y,
-			CImg<unsigned char> ogImage, Matrix<Tile, 4, 4> tileArray) {
+			CImg<unsigned char> ogImage, TileMatrix tileArray) {
 		ogImage.fill(255, 255, 255);
 		for (int q = 0; q < cols; q++) {
 			for (int s = 0; s < rows; s++) {
@@ -102,8 +103,8 @@ public:
 	}
 
 	/*This method changes the identifiers of the tiles of the messy array to the ones of the og image so we can reconstruct it.*/
-	void solvePuzzle(int cols, int rows, Matrix<Tile, 4, 4> &tileArray,
-			Matrix<Tile, 4, 4> &messyArray) {
+	void solvePuzzle(int cols, int rows, TileMatrix &tileArray,
+			TileMatrix &messyArray) {
 
 		for (int q = 0; q < cols; q++) {
 			for (int s = 0; s < rows; s++) {
@@ -163,7 +164,7 @@ public:
 	}
 
 	/*This method shows in standard output the current ids and their position*/
-	void showIds(int cols, int rows, Matrix<Tile, 4, 4> tileArray) {
+	void showIds(int cols, int rows, TileMatrix tileArray) {
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < cols; j++) {
 				cout << tileArray(i, j).getIdentifier() << " ";
@@ -173,7 +174,7 @@ public:
 
 	}
 
-	void equalImage(int cols, int rows, Matrix<Tile, 4, 4> &tileArray,
+	void equalImage(int cols, int rows, TileMatrix &tileArray,
 			Matrix<Tile, 4, 4> &messyArray) {
 		for (int q = 0; q < cols; q++) {
 			for (int s = 0; s < rows; s++) {

@@ -7,15 +7,15 @@
 
 #ifndef INCLUDE_STATE_H_
 #define INCLUDE_STATE_H_
-#include "matrix.h"
+#include "TileMatrix.h"
 #include "Tile.h"
 
 class state{
 public:
-	state(Matrix<Tile, 4, 4> tileArray, int x, int y, int cols, int rows);
+	state(TileMatrix tileArray, int x, int y, int cols, int rows);
 	~state();
 
-	Matrix<Tile, 4, 4> getTileArray() const;
+	TileMatrix getTileArray() const;
 	int getX() const;
 	int getY() const;
 	void setX(int x);
@@ -24,7 +24,7 @@ public:
 	int getRows() const;
 
 private:
-	Matrix<Tile, 4, 4> _tileArray;
+	TileMatrix _tileArray;
 
 	//Position of the black tile
 	int _x, _y;

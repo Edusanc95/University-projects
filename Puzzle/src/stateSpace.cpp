@@ -27,8 +27,8 @@ bool stateSpace::isGoal(const state &tileState) {
 	cols = tileState.getCols();
 	rows = tileState.getRows();
 
-	Matrix<Tile, 4, 4> messyArray = tileState.getTileArray();
-	Matrix<Tile, 4, 4> tileArray = _goalState.getTileArray();
+	TileMatrix messyArray = tileState.getTileArray();
+	TileMatrix tileArray = _goalState.getTileArray();
 	for (int q = 0; q < cols && aux; q++) {
 		for (int s = 0; s < rows && aux; s++) {
 
@@ -59,10 +59,10 @@ list<Sucessor>* stateSpace::Successor(const state &pstate){
 
 	int i = 1;
 
-	Matrix<Tile, 4, 4> auxTileArray1;
-	Matrix<Tile, 4, 4> auxTileArray2;
-	Matrix<Tile, 4, 4> auxTileArray3;
-	Matrix<Tile, 4, 4> auxTileArray4;
+	TileMatrix auxTileArray1(pstate.getRows(), pstate.getCols());
+	TileMatrix auxTileArray2(pstate.getRows(), pstate.getCols());
+	TileMatrix auxTileArray3(pstate.getRows(), pstate.getCols());
+	TileMatrix auxTileArray4(pstate.getRows(), pstate.getCols());
 
 	for (std::list<bool>::iterator it=possibleMovements->begin(); it != possibleMovements->end(); ++it){
 

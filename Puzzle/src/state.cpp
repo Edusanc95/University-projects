@@ -6,7 +6,7 @@
  */
 #include "state.h"
 
-state::state(Matrix<Tile, 4, 4> tileArray, int x, int y, int cols, int rows):
+state::state(TileMatrix tileArray, int x, int y, int cols, int rows):
 _tileArray(tileArray), _x(x), _y(y), _cols(cols), _rows(rows){
 
 }
@@ -16,7 +16,7 @@ state::~state(){
 
 }
 
-Matrix<Tile, 4, 4> state::getTileArray() const{
+TileMatrix state::getTileArray() const{
 	return _tileArray;
 }
 

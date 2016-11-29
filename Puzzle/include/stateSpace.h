@@ -10,7 +10,7 @@
 #include "state.h"
 #include "Sucessor.h"
 #include "node.h"
-#include "matrix.h"
+#include "TileMatrix.h"
 #include <list>
 #include <iostream>
 #include "Tile.h"

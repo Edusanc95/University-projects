@@ -32,9 +32,11 @@ bool Problem::boundedSearch(string strategy, int max_Depth){
 	while(!isSolution && !pFrontier->isEmpty() && !_reconstructing_disp.is_closed()){
 		n_actual = pFrontier->removeFirst();
 
-		cout << n_actual->getAction()<< endl;
-		_ImageManipulator.showIds(n_actual->getState().getCols(), n_actual->getState().getRows(), n_actual->getState().getTileArray());
-
+		if(n_actual->getParent() != NULL){
+			_ImageManipulator.showIds(n_actual->getParent()->getState().getCols(), n_actual->getState().getRows(), n_actual->getParent()->getState().getTileArray());
+			cout << n_actual->getAction()<< endl;
+			_ImageManipulator.showIds(n_actual->getState().getCols(), n_actual->getState().getRows(), n_actual->getState().getTileArray());
+		}
 		//Representation of what's happening on screen, can be erased without problems.
 		//_ImageManipulator.showTiles(n_actual->getState().getCols(),  n_actual->getState().getRows(), *(n_actual->getState().getTileArray()), &_reconstructing_disp);
 		auxImage =_ImageManipulator.reconstructImage(n_actual->getState().getCols()
@@ -84,7 +86,7 @@ bool Problem::Search(string strategy, int max_Depth, int inc){
 list<node*> Problem::createListTreeNodes(list<Sucessor>* sucessors, node* pNode, int max_Depth, string strategy){
 	list<node*> nodes;
 	if(pNode->getDepth()+1 > max_Depth){
-		cout << "Maximum depth obtained" << endl;
+		cout << "Maximum depth obtained, not adding the new nodes." << endl;
 		//Do nothing because we got to the maximum depth
 	}else{
 		for (std::list<Sucessor>::iterator it=sucessors->begin(); it != sucessors->end(); ++it){

@@ -19,7 +19,7 @@ public:
 	int getCost();
 	int getDepth();
 	string getAction();
-
+	node* getParent();
 private:
 	//Node information
 	node* _parent;

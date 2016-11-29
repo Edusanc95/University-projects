@@ -34,3 +34,7 @@ int node::getCost(){
 string node::getAction(){
 	return _action;
 }
+
+node* node::getParent(){
+	return _parent;
+}
