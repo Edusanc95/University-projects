@@ -31,7 +31,7 @@ bool Problem::boundedSearch(string strategy, int max_Depth){
 
 	while(!isSolution && !pFrontier->isEmpty() && !_reconstructing_disp.is_closed()){
 		n_actual = pFrontier->removeFirst();
-
+		_solution = n_actual;
 		if(n_actual->getParent() != NULL){
 			_ImageManipulator.showIds(n_actual->getParent()->getState().getCols(), n_actual->getState().getRows(), n_actual->getParent()->getState().getTileArray());
 			cout << n_actual->getAction()<< endl;
@@ -83,6 +83,28 @@ bool Problem::Search(string strategy, int max_Depth, int inc){
 	}
 	return solution;
 }
+
+void Problem::showSolution(){
+	CImg<unsigned char> auxImage("puzzle.png");
+	_reconstructing_disp.display(_ImageManipulator.reconstructImage(_solution->getState().getCols()
+			   ,_solution->getState().getRows()
+			   ,auxImage.width() / _solution->getState().getRows()
+			   ,auxImage.height() / _solution->getState().getCols()
+			   ,auxImage
+			   ,(_solution->getState().getTileArray())));
+	sleep(1);
+	while(_solution->getParent()!=NULL){
+		_solution = _solution->getParent();
+		_reconstructing_disp.display(_ImageManipulator.reconstructImage(_solution->getState().getCols()
+		,_solution->getState().getRows()
+		,auxImage.width() / _solution->getState().getRows()
+		,auxImage.height() / _solution->getState().getCols()
+		,auxImage
+		,(_solution->getState().getTileArray())));
+		sleep(1);
+	}
+}
+
 list<node*> Problem::createListTreeNodes(list<Sucessor>* sucessors, node* pNode, int max_Depth, string strategy){
 	list<node*> nodes;
 	if(pNode->getDepth()+1 > max_Depth){

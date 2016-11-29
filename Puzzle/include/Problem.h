@@ -22,6 +22,7 @@ public:
 
 	bool boundedSearch(string strategy, int max_Depth);
 	bool Search(string strategy, int max_Depth, int inc);
+	void showSolution();
 
 private:
 	state _initialState;
@@ -33,6 +34,7 @@ private:
 
 	ImageManipulation _ImageManipulator;
 	CImgDisplay _reconstructing_disp;
+	node* _solution; //This is the last node we got, and may be the solution.
 };
 
 

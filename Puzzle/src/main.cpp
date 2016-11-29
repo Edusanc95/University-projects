@@ -101,7 +101,9 @@ int main(int argc, char **argv) {
 
 				stateSpace problemStateSpace(goalState);
 				Problem puzzleProblem(initialState, problemStateSpace);
-				puzzleProblem.boundedSearch("BFS", 4);
+				if(puzzleProblem.Search("BFS", 4, 1)){
+					puzzleProblem.showSolution();
+				}
 			}
 		}
 	}
