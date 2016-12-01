@@ -7,6 +7,7 @@
 #include <list>
 #include <vector>
 #include <sstream>
+#include <time.h>
 #include "TileMatrix.h"
 
 using namespace std;
@@ -35,11 +36,8 @@ int main(int argc, char **argv) {
 	cout << "Introduce number of rows:" << endl;
 	cin >> rows;
 
-	CImg<unsigned char> ogImage("puzzle.png");
-	CImg<unsigned char> messyImage("messyPuzzle.png");
-
-	CImgDisplay main_disp(ogImage, "OG Image"), draw_disp(messyImage,
-			"Cropped Image");
+	CImg<unsigned char>* ogImage = new CImg<unsigned char>("puzzle.png");
+	CImg<unsigned char>* messyImage = new CImg<unsigned char>("messyPuzzle.png");
 
 	//ogImage
 	TileMatrix tileArray(rows,cols); // size_x, size_y
@@ -47,8 +45,8 @@ int main(int argc, char **argv) {
 	//Image that's not in order
 	TileMatrix messyArray(rows, cols); // size_x, size_y
 
-	int x = ogImage.width() / rows; //width
-	int y = ogImage.height() / cols; //height
+	int x = ogImage->width() / rows; //width
+	int y = ogImage->height() / cols; //height
 
 	ImageManipulator.cropImage(cols, rows, x, y, ogImage, tileArray);
 	ImageManipulator.cropImage(cols, rows, x, y, messyImage, messyArray);
@@ -57,9 +55,21 @@ int main(int argc, char **argv) {
 
 		tileArray.shuffle();
 		ogImage = ImageManipulator.reconstructImage(cols, rows, x, y, ogImage, tileArray);
-		ogImage.save("messyPuzzle.png");
+		ogImage->save("messyPuzzle.png");
 	} else if (newPuzzle == 2) {
 
+		int depth;
+		string strategy;
+		int option;
+		cout << "Introduce strategy:" << endl;
+		cin >> strategy;
+		cout << "Introduce depth (100 if you want the maximum one that memory allows.)" << endl;
+		cin >> depth;
+		cout << "1.- Incremental" << endl;
+		cout << "2.- No Incremental" << endl;
+		cin >> option;;
+		if((strategy == "DFS" || strategy == "BFS" || strategy == "UCS")&&(depth>0)&&(option == 1 || option == 2)){
+		CImgDisplay main_disp(*ogImage, "OG Image"), draw_disp(*messyImage, "Cropped Image");
 		while (!main_disp.is_closed()) {
 			main_disp.wait();
 			if (main_disp.button() && main_disp.mouse_y() >= 0) {
@@ -76,10 +86,10 @@ int main(int argc, char **argv) {
 				ImageManipulator.solvePuzzle(cols, rows, tileArray, messyArray);
 
 				main_disp.display(
-						ImageManipulator.reconstructImage(cols, rows, x, y,
+						*ImageManipulator.reconstructImage(cols, rows, x, y,
 								ogImage, tileArray));
 				draw_disp.display(
-						ImageManipulator.reconstructImage(cols, rows, x, y,
+						*ImageManipulator.reconstructImage(cols, rows, x, y,
 								messyImage, messyArray));
 
 				//To select where is the black tile.
@@ -101,11 +111,22 @@ int main(int argc, char **argv) {
 
 				stateSpace problemStateSpace(goalState);
 				Problem puzzleProblem(initialState, problemStateSpace);
-				if(puzzleProblem.Search("BFS", 4, 1)){
-					puzzleProblem.showSolution();
+				if(option == 1){
+					clock_t tStart = clock();
+					if(puzzleProblem.Search(strategy, depth, 1)){
+						int time = (double)(clock() - tStart)/CLOCKS_PER_SEC;
+						puzzleProblem.showSolution(strategy, option, time);
+					}
+				}else if(option == 2){
+					clock_t tStart = clock();
+					if(puzzleProblem.boundedSearch(strategy, depth)){
+						int time = (double)(clock() - tStart)/CLOCKS_PER_SEC;
+						puzzleProblem.showSolution(strategy, option, time);
+					}
 				}
 			}
 		}
+	}
 	}
 	return 0;
 }

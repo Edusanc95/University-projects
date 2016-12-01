@@ -1,0 +1,16 @@
+Done with DFS no incremental
+In depth 6
+midLeft
+In depth 5
+top
+In depth 4
+top
+In depth 3
+midLeft
+In depth 2
+midLeft
+In depth 1
+bot
+In depth 0
+nothing
+Time consumed: 118043

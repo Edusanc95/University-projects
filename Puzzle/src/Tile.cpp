@@ -8,7 +8,7 @@ Tile::Tile() {
   _identifier = 0;
 }
 
-Tile::Tile(int identifier, CImg<unsigned char> image) {
+Tile::Tile(int identifier, CImg<unsigned char> *image) {
 
   _identifier = identifier;
   _image = image;
@@ -27,7 +27,7 @@ const int Tile::getIdentifier(){
 	return _identifier;
 }
 
-const CImg<unsigned char> Tile::getImage(){
+CImg<unsigned char>* Tile::getImage(){
 	return _image;
 }
 
@@ -35,6 +35,6 @@ void Tile::setIdentifier(int identifier){
 	_identifier = identifier;
 }
 
-void Tile::setImage(CImg<unsigned char> image){
+void Tile::setImage(CImg<unsigned char> *image){
 	image = _image;
 }

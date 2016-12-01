@@ -14,7 +14,7 @@
 #include "Sucessor.h"
 #include "CImg.h"
 #include "ImageManipulation.h"
-
+#include <fstream>
 class Problem{
 public:
 	Problem(state initialState, stateSpace aStateSpace);
@@ -22,7 +22,7 @@ public:
 
 	bool boundedSearch(string strategy, int max_Depth);
 	bool Search(string strategy, int max_Depth, int inc);
-	void showSolution();
+	void showSolution(string strategy, int inc, int time);
 
 private:
 	state _initialState;

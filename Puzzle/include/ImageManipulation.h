@@ -25,7 +25,7 @@ public:
 
 	/*This method crops the Image and stores it in a custom object of type Matrix, which simulates an array, called tileArray.*/
 	void cropImage(int cols, int rows, int x, int y,
-			CImg<unsigned char> ogImage, TileMatrix &tileArray) {
+			CImg<unsigned char> *ogImage, TileMatrix &tileArray) {
 
 		int id = 1; //Identifier for the different images
 		for (int i = 0; i < cols; i++) {
@@ -39,9 +39,9 @@ public:
 				 tileArray(i, j) = tile;
 				 id++;
 				 }else{*/
-				Tile tile(id,
-						ogImage.get_crop(((x * j + x) - 1), ((y * i + y) - 1),
-								x * j, y * i));
+				CImg<unsigned char>* aux = new CImg<unsigned char>("puzzle.png");
+				*aux = ogImage->get_crop(((x * j + x) - 1), ((y * i + y) - 1),x * j, y * i);
+				Tile tile(id,aux);
 				tileArray(i, j) = tile;
 				/*if(id=1){
 				 CImg<unsigned char> aux(tileArray(i, j).getImage().width(),
@@ -64,7 +64,7 @@ public:
 				cout << z << " Row " << w << " Col " << endl;
 				cout << "Identifier: " << tileArray(z, w).getIdentifier()
 						<< endl;
-				auxImage = tileArray(z, w).getImage();
+				auxImage = *(tileArray(z, w).getImage());
 				draw_disp->display(auxImage);
 				ady = tileArray.getAdjacents(z, w);
 				for (std::list<Tile>::iterator it = ady->begin(), end =
@@ -77,9 +77,9 @@ public:
 	}
 
 	/*This method reconstructs the Image from the Matrix of Tiles given and returns it.*/
-	CImg<unsigned char> reconstructImage(int cols, int rows, int x, int y,
-			CImg<unsigned char> ogImage, TileMatrix tileArray) {
-		ogImage.fill(255, 255, 255);
+	CImg<unsigned char>* reconstructImage(int cols, int rows, int x, int y,
+			CImg<unsigned char>* ogImage, TileMatrix tileArray) {
+		ogImage->fill(255, 255, 255);
 		for (int q = 0; q < cols; q++) {
 			for (int s = 0; s < rows; s++) {
 
@@ -89,7 +89,7 @@ public:
 				 tileArray(q, s).getImage().height(), 1, 3, 0);
 				 ogImage.draw_image(s * x, q * y, aux);
 				 } else {*/
-				ogImage.draw_image(s * x, q * y, tileArray(q, s).getImage());
+				ogImage->draw_image(s * x, q * y, *(tileArray(q, s).getImage()));
 				//}
 				//ogImage.draw_image(s * x, q * y, tileArray(q, s).getImage());
 			}
@@ -112,8 +112,8 @@ public:
 				bool sorted = false;
 				for (int i = 0; i < cols && !sorted; i++) {
 					for (int j = 0; j < rows && !sorted; j++) {
-						if (messyArray(q, s).getImage()
-								== tileArray(i, j).getImage()) {
+						if (*(messyArray(q, s).getImage())
+								== *(tileArray(i, j).getImage())) {
 							sorted = true;
 							cout << "sorting "
 									<< tileArray(i, j).getIdentifier()
@@ -186,8 +186,7 @@ public:
 								== tileArray(i, j).getIdentifier()) {
 							sorted = true;
 
-							messyArray(q, s).setImage(
-									tileArray(i, j).getImage());
+							messyArray(q, s).setImage(tileArray(i, j).getImage());
 
 						}
 					}
