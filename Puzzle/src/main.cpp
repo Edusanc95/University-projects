@@ -40,17 +40,18 @@ int main(int argc, char **argv) {
 	CImg<unsigned char>* messyImage = new CImg<unsigned char>("messyPuzzle.png");
 
 	//ogImage
-	TileMatrix tileArray(rows,cols); // size_x, size_y
+	TileMatrix tileArray(cols,rows); // size_x, size_y
 
 	//Image that's not in order
-	TileMatrix messyArray(rows, cols); // size_x, size_y
+	TileMatrix messyArray(cols, rows); // size_x, size_y
 
-	int x = ogImage->width() / rows; //width
-	int y = ogImage->height() / cols; //height
+	int x = ogImage->width() / cols; //width
+	int y = ogImage->height() / rows; //height
 
-	ImageManipulator.cropImage(cols, rows, x, y, ogImage, tileArray);
-	ImageManipulator.cropImage(cols, rows, x, y, messyImage, messyArray);
+	ImageManipulator.cropImage(cols, rows, x, y, ogImage, tileArray, true);
+	ImageManipulator.cropImage(cols, rows, x, y, messyImage, messyArray, false);
 
+	ogImage->load("puzzle.png");
 	if (newPuzzle == 1) {
 
 		tileArray.shuffle();
@@ -63,12 +64,18 @@ int main(int argc, char **argv) {
 		int option;
 		cout << "Introduce strategy:" << endl;
 		cin >> strategy;
-		cout << "Introduce depth (100 if you want the maximum one that memory allows.)" << endl;
-		cin >> depth;
-		cout << "1.- Incremental" << endl;
-		cout << "2.- No Incremental" << endl;
-		cin >> option;;
-		if((strategy == "DFS" || strategy == "BFS" || strategy == "UCS")&&(depth>0)&&(option == 1 || option == 2)){
+		if(strategy == "DLS" || strategy == "BLS"){
+			cout << "Introduce depth:" << endl;
+			cin >> depth;
+		}else{
+			depth = 12; // Maximum depth that most computers can handle.
+		}
+		if(strategy == "IDS"){
+			option = 2;
+		}else{
+			option = 1;
+		}
+		if((strategy == "DFS" || strategy == "BFS" || strategy == "UCS" || strategy == "IDS" || strategy == "A*" || strategy == "BLS" || strategy == "DLS")&&(depth>0)&&(option == 1 || option == 2)){
 		CImgDisplay main_disp(*ogImage, "OG Image"), draw_disp(*messyImage, "Cropped Image");
 		while (!main_disp.is_closed()) {
 			main_disp.wait();
@@ -92,6 +99,7 @@ int main(int argc, char **argv) {
 						*ImageManipulator.reconstructImage(cols, rows, x, y,
 								messyImage, messyArray));
 
+				//ImageManipulator.showTiles(cols, rows, messyArray, &draw_disp);
 				//To select where is the black tile.
 				int posx, posy, posxx, posyy;
 				for (int i = 0; i < cols; i++) {
@@ -114,14 +122,14 @@ int main(int argc, char **argv) {
 				if(option == 1){
 					clock_t tStart = clock();
 					if(puzzleProblem.Search(strategy, depth, 1)){
-						int time = (double)(clock() - tStart)/CLOCKS_PER_SEC;
-						puzzleProblem.showSolution(strategy, option, time);
+						double time = (double)(clock() - tStart)/CLOCKS_PER_SEC;
+						puzzleProblem.showSolution(strategy, time);
 					}
 				}else if(option == 2){
 					clock_t tStart = clock();
 					if(puzzleProblem.boundedSearch(strategy, depth)){
-						int time = (double)(clock() - tStart)/CLOCKS_PER_SEC;
-						puzzleProblem.showSolution(strategy, option, time);
+						double time = (double)(clock() - tStart)/CLOCKS_PER_SEC;
+						puzzleProblem.showSolution(strategy, time);
 					}
 				}
 			}

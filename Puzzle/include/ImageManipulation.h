@@ -25,12 +25,15 @@ public:
 
 	/*This method crops the Image and stores it in a custom object of type Matrix, which simulates an array, called tileArray.*/
 	void cropImage(int cols, int rows, int x, int y,
-			CImg<unsigned char> *ogImage, TileMatrix &tileArray) {
+			CImg<unsigned char> *ogImage, TileMatrix &tileArray, bool auxOg) {
+		vector<Tile> auxVec;
+		bool same = false;
 
 		int id = 1; //Identifier for the different images
 		for (int i = 0; i < cols; i++) {
 			for (int j = 0; j < rows; j++) {
 
+				same = false;
 				//We create the tile related with the cropped image.
 				//Tile tile(id, ogImage.get_crop(x * j + x, y * i + y, x * j, y * i));
 				/*if(id=1){
@@ -40,15 +43,25 @@ public:
 				 id++;
 				 }else{*/
 				CImg<unsigned char>* aux = new CImg<unsigned char>("puzzle.png");
-				*aux = ogImage->get_crop(((x * j + x) - 1), ((y * i + y) - 1),x * j, y * i);
-				Tile tile(id,aux);
-				tileArray(i, j) = tile;
-				/*if(id=1){
-				 CImg<unsigned char> aux(tileArray(i, j).getImage().width(),
-				 tileArray(i, j).getImage().height(), 1, 3, 0);
-				 ogImage.draw_image(j * x, i * y, aux);
-				 }*/
-				id++;
+				*aux = ogImage->get_crop(((x * i + x) - 1), ((y * j + y) - 1),x * i, y * j);
+				if(id==1 && auxOg){
+					*aux = CImg<unsigned char>(x, y, 1, 3, 0);
+				}
+
+				for (std::vector<Tile>::iterator it = auxVec.begin(); it != auxVec.end() && same == false; ++it){
+					if(it->getImage()==aux){
+						same = true;
+						Tile tile(it->getIdentifier(),aux);
+						tileArray(i, j) = tile;
+					}
+				}
+
+				if(same == false){
+					Tile tile(id,aux);
+					tileArray(i, j) = tile;
+					auxVec.push_back(tile);
+					id++;
+				}
 				//}
 			}
 		}
@@ -89,7 +102,7 @@ public:
 				 tileArray(q, s).getImage().height(), 1, 3, 0);
 				 ogImage.draw_image(s * x, q * y, aux);
 				 } else {*/
-				ogImage->draw_image(s * x, q * y, *(tileArray(q, s).getImage()));
+				ogImage->draw_image(q * x, s * y, *(tileArray(q, s).getImage()));
 				//}
 				//ogImage.draw_image(s * x, q * y, tileArray(q, s).getImage());
 			}
@@ -112,16 +125,16 @@ public:
 				bool sorted = false;
 				for (int i = 0; i < cols && !sorted; i++) {
 					for (int j = 0; j < rows && !sorted; j++) {
-						if (*(messyArray(q, s).getImage())
-								== *(tileArray(i, j).getImage())) {
+						if (*(messyArray(s, q).getImage())
+								== *(tileArray(j, i).getImage())) {
 							sorted = true;
 							cout << "sorting "
-									<< tileArray(i, j).getIdentifier()
+									<< tileArray(j, i).getIdentifier()
 									<< " with "
-									<< messyArray(q, s).getIdentifier() << endl;
+									<< messyArray(s, q).getIdentifier() << endl;
 
-							messyArray(q, s).setIdentifier(
-									tileArray(i, j).getIdentifier());
+							messyArray(s, q).setIdentifier(
+									tileArray(j, i).getIdentifier());
 
 						}
 					}
@@ -144,7 +157,7 @@ public:
 			std::cout << ' ' << it->getIdentifier();
 		std::cout << '\n';
 
-		//and sort the vector using standart sort() function
+		//and sort the vector using standard sort() function
 		std::sort(vect.begin(), vect.end(), compareFunction);
 
 		/*
@@ -167,7 +180,7 @@ public:
 	void showIds(int cols, int rows, TileMatrix tileArray) {
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < cols; j++) {
-				cout << tileArray(i, j).getIdentifier() << " ";
+				cout << tileArray(j, i).getIdentifier() << " ";
 			}
 			cout << endl;
 		}
@@ -175,7 +188,7 @@ public:
 	}
 
 	void equalImage(int cols, int rows, TileMatrix &tileArray,
-			Matrix<Tile, 4, 4> &messyArray) {
+			TileMatrix &messyArray) {
 		for (int q = 0; q < cols; q++) {
 			for (int s = 0; s < rows; s++) {
 

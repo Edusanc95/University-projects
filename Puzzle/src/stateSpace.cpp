@@ -53,16 +53,16 @@ list<Sucessor>* stateSpace::Successor(const state &pstate){
 
 	list<Sucessor>* sucessors = new list<Sucessor>();
 
-	list<bool>* possibleMovements = pstate.getTileArray().getMovements(pstate.getX(), pstate.getY(), pstate.getRows(), pstate.getCols());
+	list<bool>* possibleMovements = pstate.getTileArray().getMovements(pstate.getX(), pstate.getY(), pstate.getCols(), pstate.getRows());
 
 	//Used just to create the new state.
 
 	int i = 1;
 
-	TileMatrix auxTileArray1(pstate.getRows(), pstate.getCols());
-	TileMatrix auxTileArray2(pstate.getRows(), pstate.getCols());
-	TileMatrix auxTileArray3(pstate.getRows(), pstate.getCols());
-	TileMatrix auxTileArray4(pstate.getRows(), pstate.getCols());
+	TileMatrix auxTileArray1(pstate.getCols(), pstate.getRows());
+	TileMatrix auxTileArray2(pstate.getCols(), pstate.getRows());
+	TileMatrix auxTileArray3(pstate.getCols(), pstate.getRows());
+	TileMatrix auxTileArray4(pstate.getCols(), pstate.getRows());
 
 	for (std::list<bool>::iterator it=possibleMovements->begin(); it != possibleMovements->end(); ++it){
 
@@ -77,14 +77,14 @@ list<Sucessor>* stateSpace::Successor(const state &pstate){
 				Tile aux1(pstate.getTileArray().get(pstate.getX(),pstate.getY()).getIdentifier(),
 						pstate.getTileArray().get(pstate.getX(),pstate.getY()).getImage());
 				//aux1 = auxTileArray1(pstate.getX(), pstate.getY());
-				Tile aux2(pstate.getTileArray().get(pstate.getX()-1,pstate.getY()).getIdentifier(),
-						pstate.getTileArray().get(pstate.getX()-1,pstate.getY()).getImage());
+				Tile aux2(pstate.getTileArray().get(pstate.getX(),pstate.getY()-1).getIdentifier(),
+						pstate.getTileArray().get(pstate.getX(),pstate.getY()-1).getImage());
 				//aux2 = auxTileArray1(pstate.getX()-1, pstate.getY());
 				auxTileArray1(pstate.getX(), pstate.getY()) = aux2;
-				auxTileArray1(pstate.getX()-1, pstate.getY()) = aux1;
+				auxTileArray1(pstate.getX(), pstate.getY()-1) = aux1;
 				state children(auxTileArray1,pstate.getX(),pstate.getY(),pstate.getCols(),pstate.getRows());
-				cout << "Changing " << children.getX() << children.getY()<< " for " << children.getX()-1 << children.getY() << endl;
-				children.setX(children.getX()-1);
+				cout << "Changing " << children.getX() << children.getY()<< " for " << children.getX() << children.getY()-1 << endl;
+				children.setY(children.getY()-1);
 
 				Sucessor aux(children, 1, "top");
 				sucessors->push_back(aux);
@@ -97,14 +97,14 @@ list<Sucessor>* stateSpace::Successor(const state &pstate){
 				Tile aux1(pstate.getTileArray().get(pstate.getX(),pstate.getY()).getIdentifier(),
 						pstate.getTileArray().get(pstate.getX(),pstate.getY()).getImage());
 				//aux1 = auxTileArray2(pstate.getX(), pstate.getY());
-				Tile aux2(pstate.getTileArray().get(pstate.getX()+1,pstate.getY()).getIdentifier(),
-						pstate.getTileArray().get(pstate.getX()+1,pstate.getY()).getImage());
+				Tile aux2(pstate.getTileArray().get(pstate.getX(),pstate.getY()+1).getIdentifier(),
+						pstate.getTileArray().get(pstate.getX(),pstate.getY()+1).getImage());
 				//aux2 = auxTileArray2(pstate.getX()+1, pstate.getY());
 				auxTileArray2(pstate.getX(), pstate.getY()) = aux2;
-				auxTileArray2(pstate.getX()+1, pstate.getY()) = aux1;
+				auxTileArray2(pstate.getX(), pstate.getY()+1) = aux1;
 				state children(auxTileArray2,pstate.getX(),pstate.getY(),pstate.getCols(),pstate.getRows());
-				cout << "Changing " << children.getX() << children.getY()<< " for " << children.getX()+1 << children.getY() << endl;
-				children.setX(children.getX()+1);
+				cout << "Changing " << children.getX() << children.getY()<< " for " << children.getX() << children.getY()+1 << endl;
+				children.setY(children.getY()+1);
 				Sucessor aux(children, 1, "bot");
 				sucessors->push_back(aux);
 
@@ -115,15 +115,15 @@ list<Sucessor>* stateSpace::Successor(const state &pstate){
 				Tile aux1(pstate.getTileArray().get(pstate.getX(),pstate.getY()).getIdentifier(),
 						pstate.getTileArray().get(pstate.getX(),pstate.getY()).getImage());
 				//aux1 = auxTileArray3(pstate.getX(), pstate.getY());
-				Tile aux2(pstate.getTileArray().get(pstate.getX(),pstate.getY()-1).getIdentifier(),
-						pstate.getTileArray().get(pstate.getX(),pstate.getY()-1).getImage());
+				Tile aux2(pstate.getTileArray().get(pstate.getX()-1,pstate.getY()).getIdentifier(),
+						pstate.getTileArray().get(pstate.getX()-1,pstate.getY()).getImage());
 
 				//aux2 = auxTileArray3(pstate.getX(), pstate.getY()-1);
 				auxTileArray3(pstate.getX(), pstate.getY()) = aux2;
-				auxTileArray3(pstate.getX(), pstate.getY()-1) = aux1;
+				auxTileArray3(pstate.getX()-1, pstate.getY()) = aux1;
 				state children(auxTileArray3,pstate.getX(),pstate.getY(),pstate.getCols(),pstate.getRows());
-				cout << "Changing " << children.getX() << children.getY()<< " for " << children.getX() << children.getY()-1 << endl;
-				children.setY(children.getY()-1);
+				cout << "Changing " << children.getX() << children.getY()<< " for " << children.getX()-1 << children.getY() << endl;
+				children.setX(children.getX()-1);
 				//children.setY(children.getY()-1);
 				Sucessor aux(children, 1, "midLeft");
 				sucessors->push_back(aux);
@@ -136,14 +136,14 @@ list<Sucessor>* stateSpace::Successor(const state &pstate){
 				Tile aux1(pstate.getTileArray().get(pstate.getX(),pstate.getY()).getIdentifier(),
 						pstate.getTileArray().get(pstate.getX(),pstate.getY()).getImage());
 				//aux1 = auxTileArray4(pstate.getX(), pstate.getY());
-				Tile aux2(pstate.getTileArray().get(pstate.getX(),pstate.getY()+1).getIdentifier(),
-						pstate.getTileArray().get(pstate.getX(),pstate.getY()+1).getImage());
+				Tile aux2(pstate.getTileArray().get(pstate.getX()+1,pstate.getY()).getIdentifier(),
+						pstate.getTileArray().get(pstate.getX()+1,pstate.getY()).getImage());
 				//aux2 = auxTileArray4(pstate.getX(), pstate.getY()+1);
 				auxTileArray4(pstate.getX(), pstate.getY()) = aux2;
-				auxTileArray4(pstate.getX(), pstate.getY()+1) = aux1;
+				auxTileArray4(pstate.getX()+1, pstate.getY()) = aux1;
 				state children(auxTileArray4,pstate.getX(),pstate.getY(),pstate.getCols(),pstate.getRows());
-				cout << "Changing " << children.getX() << children.getY() << " for " << children.getX() << children.getY()+1 << endl;
-				children.setY(children.getY()+1);
+				cout << "Changing " << children.getX() << children.getY() << " for " << children.getX()+1 << children.getY() << endl;
+				children.setX(children.getX()+1);
 				Sucessor aux(children, 1, "midRight");
 				sucessors->push_back(aux);
 

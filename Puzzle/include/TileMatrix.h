@@ -91,7 +91,7 @@ public:
 	// Returns possible movements based on the specified position, the returning list has 4 booleans ordered like:
 	// 1st: Top 2nd: Bot 3rd: MidLeft 4th: MidRight
 
-	std::list<bool>* getMovements(int x, int y, int xx, int yy) {
+	std::list<bool>* getMovements(int y, int x, int xx, int yy) {
 		std::list<bool>* movements = new std::list<bool>;
 		bool top = false, midLeft = false, midRight = false, bot = false;
 

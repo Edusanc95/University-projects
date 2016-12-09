@@ -29,11 +29,14 @@ bool Problem::boundedSearch(string strategy, int max_Depth){
 	//Remember to eliminate iterator and maxAux, and the _reconstructing_disp if needed.
 	_reconstructing_disp.display(*auxImage);
 
+	_ImageManipulator.showIds(_stateSpace.getGoalState().getCols(), _stateSpace.getGoalState().getRows(), _stateSpace.getGoalState().getTileArray());
+
 	while(!isSolution && !pFrontier->isEmpty() && !_reconstructing_disp.is_closed()){
 		n_actual = pFrontier->removeFirst();
 		_solution = n_actual;
 		cout << "Depth: " << n_actual->getDepth() << endl;
 		cout << "Value: " << n_actual->getValue() << endl;
+		cout << "Heuristic: " << h(n_actual->getState()) << endl;
 		if(n_actual->getParent() != NULL){
 			_ImageManipulator.showIds(n_actual->getParent()->getState().getCols(), n_actual->getState().getRows(), n_actual->getParent()->getState().getTileArray());
 			cout << n_actual->getAction()<< endl;
@@ -85,24 +88,23 @@ bool Problem::Search(string strategy, int max_Depth, int inc){
 	return solution;
 }
 
-void Problem::showSolution(string strategy, int inc, int time){
+void Problem::showSolution(string strategy, double time){
 	CImg<unsigned char>* auxImage = new CImg<unsigned char>("puzzle.png");
 	_reconstructing_disp.display(*(_ImageManipulator.reconstructImage(_solution->getState().getCols()
 			   ,_solution->getState().getRows()
-			   ,auxImage->width() / _solution->getState().getRows()
-			   ,auxImage->height() / _solution->getState().getCols()
+			   ,auxImage->width() / _solution->getState().getCols()
+			   ,auxImage->height() / _solution->getState().getRows()
 			   ,auxImage
 			   ,(_solution->getState().getTileArray()))));
 	sleep(1);
-	string incremental;
-	if(inc == 1){
-		incremental = " incremental";
-	}else if(inc == 2){
-		incremental = " no incremental";
-	}
+
 	ofstream myfile;
-	myfile.open ("result.txt");
-	myfile << "Done with "<< strategy << incremental <<"\n";
+	string resultTxt;
+	resultTxt += "result";
+	resultTxt += strategy;
+	resultTxt += ".txt";
+	myfile.open(resultTxt);
+	myfile << "Done with "<< strategy <<"\n";
 	myfile << "In depth " << _solution->getDepth() << "\n";
 	myfile << _solution->getAction() <<"\n";
 
@@ -110,8 +112,8 @@ void Problem::showSolution(string strategy, int inc, int time){
 		_solution = _solution->getParent();
 		_reconstructing_disp.display(*(_ImageManipulator.reconstructImage(_solution->getState().getCols()
 		,_solution->getState().getRows()
-		,auxImage->width() / _solution->getState().getRows()
-		,auxImage->height() / _solution->getState().getCols()
+		,auxImage->width() / _solution->getState().getCols()
+		,auxImage->height() / _solution->getState().getRows()
 		,auxImage
 		,(_solution->getState().getTileArray()))));
 		sleep(1);
@@ -130,12 +132,14 @@ list<node*> Problem::createListTreeNodes(list<Sucessor>* sucessors, node* pNode,
 		//Do nothing because we got to the maximum depth
 	}else{
 		for (std::list<Sucessor>::iterator it=sucessors->begin(); it != sucessors->end(); ++it){
-			if(strategy=="BFS"){
+			if(strategy=="BFS" || strategy == "BLS"){
 				value = pNode->getDepth()+1;
-			}else if(strategy=="DFS"){
+			}else if(strategy=="DFS" || strategy == "DLS" || strategy == "IDS"){
 				value = (-1)*(pNode->getDepth()+1);
 			}else if(strategy=="UCS"){
 				value = pNode->getValue()+1;
+			}else if(strategy=="A*"){
+				value = pNode->getCost()+h(pNode->getState());
 			}
 			node* auxNode = new node(pNode, it->getState(), it->getCost(), it->getAction(), pNode->getDepth()+1, value);
 			nodes.push_back(auxNode);
@@ -144,3 +148,14 @@ list<node*> Problem::createListTreeNodes(list<Sucessor>* sucessors, node* pNode,
 	return nodes;
 }
 
+int Problem::h(state x){
+	int counter = 0;
+	for(int i = 0; i < _stateSpace.getGoalState().getCols(); i++){
+		for(int j = 0; j < _stateSpace.getGoalState().getRows(); j++){
+			if(x.getTileArray().get(i,j).getIdentifier() != _stateSpace.getGoalState().getTileArray().get(i,j).getIdentifier()){
+				counter++;
+			}
+		}
+	}
+	return counter;
+}

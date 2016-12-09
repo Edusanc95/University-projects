@@ -22,8 +22,8 @@ public:
 
 	bool boundedSearch(string strategy, int max_Depth);
 	bool Search(string strategy, int max_Depth, int inc);
-	void showSolution(string strategy, int inc, int time);
-
+	void showSolution(string strategy, double time);
+	int h(state x);
 private:
 	state _initialState;
 	stateSpace _stateSpace;
